@@ -39,7 +39,7 @@ public class Customer {
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToMany(mappedBy = "customers", cascade = CascadeType.PERSIST)
-	private Set<Dealership> dealershipId = new HashSet<Dealership>();
+	private Set<Dealership> dealerships = new HashSet<Dealership>();
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
