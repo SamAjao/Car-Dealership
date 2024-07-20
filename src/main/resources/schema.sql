@@ -23,11 +23,13 @@ CREATE TABLE employee {
 	phone VARCHAR (20) NOT NULL,
 	job_title VARCHAR (64)
 	PRIMARY KEY (employee_id),
-	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id)
+	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id) ON DELETE CASCADE
 };
 
 CREATE TABLE customer {
 	customer_id INT NOT NULL AUTO_INCREMENT,
+	dealership_id INT NOT NULL,
+	vehicle_id INT,
 	first_name VARCHAR (128) NOT NULL,
 	last_name VARCHAR (128) NOT NULL,
 	email VARCHAR (128) NOT NULL,
@@ -37,20 +39,22 @@ CREATE TABLE customer {
 	state VARCHAR (128),
 	zip VARCHAR (128),
 	PRIMARY KEY (customer_id),
+	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id),
+	FOREIGN KEY (vehicle_id) REFERENCES vehicle (vehicle_id) ON DELETE CASCADE
 };
 
 CREATE TABLE vehicle {
 	vehicle_id INT NOT NULL AUTO_INCREMENT,
-	year INT NOT NULL,
 	dealership_id INT NOT NULL,
 	customer_id INT,
+	year INT NOT NULL,
 	make VARCHAR (128) NOT NULL,
 	model VARCHAR (128) NOT NULL,
 	color VARCHAR (128) NOT NULL,
 	trim VARCHAR (128),
 	PRIMARY KEY (vehicle_id),
-	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id),
-	FOREIGN KEY (customer_id) REFRENCES customer (customer_id)
+	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id) ON DELETE CASCADE,
+	FOREIGN KEY (customer_id) REFRENCES customer (customer_id) ON DELETE CASCADE
 };
 
 CREATE TABLE dealer_customer {
