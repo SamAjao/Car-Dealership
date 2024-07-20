@@ -29,6 +29,7 @@ public class Dealership {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long dealershipId;
+	
 	private String name;
 	private String address;
 	private String city;

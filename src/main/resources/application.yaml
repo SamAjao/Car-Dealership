@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username:  car_dealership
+    password:  car_dealership
+    url:  jdbc:mysql://localhost:3306/car_dealership
+    
+  jpa:
+    hibernate:
+      ddl-auto:  none
+    show-sql: true
+    defer-datasource-initialization: true
+    
+  sql:
+    init:
+      mode: never

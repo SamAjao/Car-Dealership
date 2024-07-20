@@ -33,5 +33,6 @@ public class Employee {
 	@ToString.Exclude
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "dealership_id")
-	private Long dealershipId;
+	private Dealership dealership;
+
 }
