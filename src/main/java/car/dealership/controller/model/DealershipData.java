@@ -53,6 +53,32 @@ public class DealershipData {
 		}
 	}
 	
+	public Dealership toDealership() {
+		Dealership dealership = new Dealership();
+		
+		dealership.setDealershipId(dealershipId);
+		dealership.setName(name);
+		dealership.setAddress(address);
+		dealership.setCity(city);
+		dealership.setState(state);
+		dealership.setZip(zip);
+		dealership.setPhone(phone);
+		
+		for(VehicleData vehicleData : vehicles) {
+			dealership.getVehicles().add(vehicleData.toVehicle());
+		}
+		
+		for(EmployeeData employeeData : employees) {
+			dealership.getEmployees().add(employeeData.toEmployee());
+		}
+		
+		for(CustomerData customerData : customers) {
+			dealership.getCustomers().add(customerData.toCustomer());
+		}
+		
+		return dealership;
+	}
+	
 	@Data
 	@NoArgsConstructor
 	public static class VehicleData{
@@ -72,7 +98,22 @@ public class DealershipData {
 			this.color = vehicle.getColor();
 			this.trim = vehicle.getTrim();
 			this.customer = vehicle.getCustomer();
-		}	
+		}
+		
+		public Vehicle toVehicle() {
+			Vehicle vehicle = new Vehicle();
+			
+			vehicle.setVehicleId(vehicleId);
+			vehicle.setYear(year);
+			vehicle.setMake(make);
+			vehicle.setModel(model);
+			vehicle.setColor(color);
+			vehicle.setTrim(trim);
+			vehicle.setCustomer(customer);
+			
+			return vehicle;	
+		}
+		
 	} // END VehicleData{} inner class
 	
 	@Data
@@ -90,6 +131,18 @@ public class DealershipData {
 			this.lastName = employee.getLastName();
 			this.phone = employee.getPhone();
 			this.jobTitle = employee.getJobTitle();
+		}
+		
+		public Employee toEmployee() {
+			Employee employee = new Employee();
+			
+			employee.setEmployeeId(employeeId);
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setPhone(phone);
+			employee.setJobTitle(jobTitle);
+			
+			return employee;
 		}
 	} // END EmployeeData{} inner class
 	
@@ -126,6 +179,30 @@ public class DealershipData {
 			for(Vehicle vehicle : customer.getVehicles()) {
 				this.vehicles.add(new VehicleData(vehicle));
 			}
+		}
+		
+		public Customer toCustomer() {
+			Customer customer = new Customer();
+			
+			customer.setCustomerId(customerId);
+			customer.setFirstName(firstName);
+			customer.setLastName(lastName);
+			customer.setEmail(email);
+			customer.setPhone(phone);
+			customer.setAddress(address);
+			customer.setCity(city);
+			customer.setState(state);
+			customer.setZip(zip);
+			
+			for(DealershipData dealershipData : dealerships) {
+				customer.getDealerships().add(dealershipData.toDealership());
+			}
+			
+			for(VehicleData vehicleData : vehicles) {
+				customer.getVehicles().add(vehicleData.toVehicle());
+			}
+			
+			return customer;		
 		}
 	} // END CustomerData{} inner class
 	
