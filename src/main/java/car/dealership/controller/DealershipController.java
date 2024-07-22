@@ -7,9 +7,16 @@
 */
 package car.dealership.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,4 +40,40 @@ public class DealershipController {
 		log.info("Creating dealership {}", dealershipData);
 		return dealershipService.saveDealership(dealershipData);
 	}
+	
+	@PutMapping("/dealership/{dealershipId}")
+	public DealershipData updateDealership(@PathVariable Long dealershipId, @RequestBody DealershipData dealershipData) {
+		log.info("Updating dealership {}", dealershipData);
+		dealershipData.setDealershipId(dealershipId);
+		return dealershipService.saveDealership(dealershipData);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}")
+	public DealershipData retrieveDealership(@PathVariable Long dealershipId) {
+		log.info("Retrieving dealership with ID={}", dealershipId);
+		
+		return dealershipService.retrieveDealershipById(dealershipId);
+	}
+	
+	@GetMapping("/dealership")
+	public List<DealershipData> retrieveAllDealerships(){
+		log.info("Retrieving all dealerships...");
+		return dealershipService.retrieveAllDealerships();
+	}
+	
+	@DeleteMapping("/dealership")
+	public void deleteAllDealerships() {
+		log.info("Attempting to delete all dealerships...");
+		throw new UnsupportedOperationException("Deleting all dealerships is not allowed!!!");
+	}
+	
+	@DeleteMapping("/dealership/{dealershipId}")
+	public Map<String, String> deleteDealershipById(@PathVariable Long dealershipId){
+		log.info("Deleting dealership with ID=" + dealershipId);
+		
+		dealershipService.deleteDealershipById(dealershipId);
+		
+		return Map.of("message", "Deletion of dealership with ID=" + dealershipId + " was successful");
+	}
+		
 }
