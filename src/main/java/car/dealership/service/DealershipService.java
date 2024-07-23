@@ -152,6 +152,17 @@ public class DealershipService {
 		employee.setPhone(employeeData.getPhone());
 		employee.setJobTitle(employeeData.getJobTitle());
 	}
+
+	public EmployeeData retrieveEmployeeById(Long dealershipId, Long employeeId) {
+		findDealershipById(dealershipId); //throws exception if NOT found.
+		Employee employee = findEmployeeById(dealershipId, employeeId);
+		
+		if(employee.getDealership().getDealershipId() != dealershipId) {
+			throw new IllegalStateException("Employee with ID=" + employeeId + " is not employed at dealership with ID=" + dealershipId);
+		}
+		
+		return new EmployeeData(employee);
+	}
 	
 
 }

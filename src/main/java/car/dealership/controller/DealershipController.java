@@ -92,5 +92,20 @@ public class DealershipController {
 		
 		return dealershipService.saveEmployee(dealershipId, employeeData);
 	}
+	
+	@PutMapping("/dealership/{dealershipId}/employee/{employeeId}")
+	public EmployeeData updateEmployee(@PathVariable Long dealershipId, @RequestBody EmployeeData employeeData,
+			@PathVariable Long employeeId) {
+		log.info("Updating employee {} at dealershipID={}", employeeData, dealershipId);
+		employeeData.setEmployeeId(employeeId);
+		return dealershipService.saveEmployee(dealershipId, employeeData);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/employee/{employeeId}")
+	public EmployeeData retrieveEmployeeById(@PathVariable Long dealershipId, @PathVariable Long employeeId) {
+		log.info("Retrieving employee with ID={} for dealership with ID={}", employeeId, dealershipId);
+		
+		return dealershipService.retrieveEmployeeById(dealershipId, employeeId);
+	}
 		
 }
