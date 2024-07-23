@@ -16,15 +16,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import car.dealership.controller.model.DealershipData;
+import car.dealership.controller.model.DealershipData.EmployeeData;
 import car.dealership.dao.DealershipDao;
+import car.dealership.dao.EmployeeDao;
 import car.dealership.entity.Dealership;
+import car.dealership.entity.Employee;
 
 @Service
 public class DealershipService {
 	
 	@Autowired
 	private DealershipDao dealershipDao;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
 
+	/*
+	 *  ::::::::::::::::::::::::::: DEALERSHIP TRANSACTIONS :::::::::::::::::::::::::::
+	 */
+	
 	@Transactional(readOnly = false)
 	public DealershipData saveDealership(DealershipData dealershipData) {
 		Long dealershipId = dealershipData.getDealershipId();
@@ -87,6 +97,60 @@ public class DealershipService {
 	public void deleteDealershipById(Long dealershipId) {
 		Dealership dealership = findDealershipById(dealershipId);
 		dealershipDao.delete(dealership);
+	}
+
+	/*
+	 *  ::::::::::::::::::::::::::: EMPLOYEE TRANSACTIONS :::::::::::::::::::::::::::
+	 */
+	
+	@Transactional(readOnly = false)
+	public EmployeeData saveEmployee(Long dealershipId, EmployeeData employeeData) {
+		Dealership dealership = findDealershipById(dealershipId);
+		Long employeeId = employeeData.getEmployeeId();
+		Employee employee = findOrCreateEmploye(dealershipId, employeeId);
+		
+		copyEmployeeFields(employee, employeeData);
+		
+		employee.setDealership(dealership);
+		dealership.getEmployees().add(employee);
+		
+		Employee dbEmployee = employeeDao.save(employee);
+		return new EmployeeData(dbEmployee);
+	}
+
+	private Employee findOrCreateEmploye(Long dealershipId, Long employeeId) {
+		Employee employee;
+		
+		if(Objects.isNull(employeeId)) {
+			employee = new Employee();
+		}
+		else {
+			employee = findEmployeeById(dealershipId, employeeId);
+		}
+		
+		return employee;
+	}
+
+	private Employee findEmployeeById(Long dealershipId, Long employeeId) {
+		Employee employee = employeeDao.findById(employeeId)
+				.orElseThrow(() -> new NoSuchElementException(
+						"Employee with ID=" + employeeId + " was not found"));
+		
+		if(employee.getDealership().getDealershipId() == dealershipId) {
+			return employee;
+		}
+		else {
+			throw new IllegalArgumentException("Employee with employee_id=" + employeeId + " was not found");
+		}
+	}
+	
+	private void copyEmployeeFields(Employee employee, EmployeeData employeeData) {
+		employee.setDealership(employeeData.toEmployee().getDealership());
+		employee.setEmployeeId(employeeData.getEmployeeId());
+		employee.setFirstName(employeeData.getFirstName());
+		employee.setLastName(employeeData.getLastName());
+		employee.setPhone(employeeData.getPhone());
+		employee.setJobTitle(employeeData.getJobTitle());
 	}
 	
 

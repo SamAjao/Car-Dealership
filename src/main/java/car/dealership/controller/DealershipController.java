@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import car.dealership.controller.model.DealershipData;
+import car.dealership.controller.model.DealershipData.EmployeeData;
 import car.dealership.service.DealershipService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +34,10 @@ public class DealershipController {
 	
 	@Autowired
 	private DealershipService dealershipService;
+	
+	/*
+	 * DEALERSHIP CRUD OPERATIONS
+	 */
 	
 	@PostMapping("/dealership")
 	@ResponseStatus(code = HttpStatus.CREATED)
@@ -74,6 +79,18 @@ public class DealershipController {
 		dealershipService.deleteDealershipById(dealershipId);
 		
 		return Map.of("message", "Deletion of dealership with ID=" + dealershipId + " was successful");
+	}
+	
+	/*
+	 * EMPLOYEE CRUD OPERATIONS
+	 */
+	
+	@PostMapping("/dealership/{dealershipId}/employee")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public EmployeeData insertEmployee(@PathVariable Long dealershipId, @RequestBody EmployeeData employeeData) {
+		log.info("Creating employee {}", employeeData);
+		
+		return dealershipService.saveEmployee(dealershipId, employeeData);
 	}
 		
 }
