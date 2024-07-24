@@ -7,6 +7,7 @@
 */
 package car.dealership.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -17,10 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import car.dealership.controller.model.DealershipData;
 import car.dealership.controller.model.DealershipData.EmployeeData;
+import car.dealership.controller.model.DealershipData.VehicleData;
 import car.dealership.dao.DealershipDao;
 import car.dealership.dao.EmployeeDao;
+import car.dealership.dao.VehicleDao;
 import car.dealership.entity.Dealership;
 import car.dealership.entity.Employee;
+import car.dealership.entity.Vehicle;
 
 @Service
 public class DealershipService {
@@ -30,6 +34,9 @@ public class DealershipService {
 	
 	@Autowired
 	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private VehicleDao vehicleDao;
 
 	/*
 	 *  ::::::::::::::::::::::::::: DEALERSHIP TRANSACTIONS :::::::::::::::::::::::::::
@@ -163,6 +170,73 @@ public class DealershipService {
 		
 		return new EmployeeData(employee);
 	}
+
+	public List<EmployeeData> retrieveAllEmployeesByDealershipId(Long dealershipId) {
+		Dealership dealership = findDealershipById(dealershipId);
+		List <EmployeeData> response = new LinkedList<EmployeeData>();
+		
+		for(Employee employee : dealership.getEmployees()) {
+			response.add(new EmployeeData(employee));
+		}
+		
+		return response;
+	}
+
 	
+	
+	/*
+	 *  ::::::::::::::::::::::::::: VEHICLE TRANSACTIONS :::::::::::::::::::::::::::
+	 */
+	
+	@Transactional(readOnly = false)
+	public VehicleData saveVehicle(Long dealershipId, VehicleData vehicleData) {
+		Dealership dealership = findDealershipById(dealershipId);
+		Long vehicleId = vehicleData.getVehicleId();
+		Vehicle vehicle = findOrCreateVehicle(dealershipId, vehicleId);
+		
+		copyVehicleFields(vehicle, vehicleData);
+		
+		vehicle.setDealership(dealership);
+		dealership.getVehicles().add(vehicle);
+		
+		Vehicle dbVehicle = vehicleDao.save(vehicle);
+		return new VehicleData(dbVehicle);
+	}
+
+	private Vehicle findOrCreateVehicle(Long dealershipId, Long vehicleId) {
+		Vehicle vehicle;
+		
+		if(Objects.isNull(vehicleId)) {
+			vehicle = new Vehicle();
+		}
+		else {
+			vehicle = findVehicleById(dealershipId, vehicleId);
+		}
+		
+		return vehicle;
+	}
+
+	private Vehicle findVehicleById(Long dealershipId, Long vehicleId) {
+		Vehicle vehicle = vehicleDao.findById(vehicleId)
+				.orElseThrow(() -> new NoSuchElementException(
+						"Vehicle with ID=" + vehicleId + " was not found"));
+		
+		if(vehicle.getDealership().getDealershipId() == dealershipId) {
+			return vehicle;
+		}
+		else {
+			throw new IllegalArgumentException("Vehicle with vehicle_id=" + vehicleId + " was not found");
+		}
+	}
+	
+	private void copyVehicleFields(Vehicle vehicle, VehicleData vehicleData) {
+		vehicle.setVehicleId(vehicleData.getVehicleId());
+		vehicle.setYear(vehicleData.getYear());
+		vehicle.setMake(vehicleData.getMake());
+		vehicle.setModel(vehicleData.getModel());
+		vehicle.setColor(vehicleData.getColor());
+		vehicle.setTrim(vehicleData.getTrim());
+		vehicle.setCustomer(vehicleData.getCustomer());
+	}
 
 }

@@ -111,7 +111,7 @@ public class DealershipData {
 			vehicle.setTrim(trim);
 			vehicle.setCustomer(customer);
 			
-			return vehicle;	
+			return vehicle;
 		}
 		
 	} // END VehicleData{} inner class

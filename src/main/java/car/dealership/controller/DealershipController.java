@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import car.dealership.controller.model.DealershipData;
 import car.dealership.controller.model.DealershipData.EmployeeData;
+import car.dealership.controller.model.DealershipData.VehicleData;
 import car.dealership.service.DealershipService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,6 +107,25 @@ public class DealershipController {
 		log.info("Retrieving employee with ID={} for dealership with ID={}", employeeId, dealershipId);
 		
 		return dealershipService.retrieveEmployeeById(dealershipId, employeeId);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/employee")
+	public List<EmployeeData> retrieveAllEmployeesByDealershipId(@PathVariable Long dealershipId){
+		log.info("Retrieving all employees at dealership ID={}", dealershipId);
+		
+		return dealershipService.retrieveAllEmployeesByDealershipId(dealershipId);
+	}
+	
+	/*
+	 * VEHICLE CRUD OPERATIONS
+	 */
+	
+	@PostMapping("/dealership/{dealershipId}/vehicle")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public VehicleData insertVehicle(@PathVariable Long dealershipId, @RequestBody VehicleData vehicleData) {
+		log.info("Creating vehicle {}", vehicleData);
+		
+		return dealershipService.saveVehicle(dealershipId, vehicleData);
 	}
 		
 }
