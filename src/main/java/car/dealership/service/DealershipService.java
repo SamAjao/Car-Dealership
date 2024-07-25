@@ -239,4 +239,31 @@ public class DealershipService {
 		vehicle.setCustomer(vehicleData.getCustomer());
 	}
 
+	public VehicleData retrieveVehicleById(Long dealershipId, Long vehicleId) {
+		findDealershipById(dealershipId); //throws exception if NOT found.
+		Vehicle vehicle = findVehicleById(dealershipId, vehicleId);
+		
+		if(vehicle.getDealership().getDealershipId() != dealershipId) {
+			throw new IllegalStateException("Vehicle with ID=" + vehicleId + " was not at dealership with ID=" + dealershipId);
+		}
+		
+		return new VehicleData(vehicle);
+	}
+
+	public List<VehicleData> retrieveAllVehiclesByDealershipId(Long dealershipId) {
+		Dealership dealership = findDealershipById(dealershipId);
+		List <VehicleData> response = new LinkedList<VehicleData>();
+		
+		for(Vehicle vehicle : dealership.getVehicles()) {
+			response.add(new VehicleData(vehicle));
+		}
+		
+		return response;
+	}
+
+	public void deleteVehicleById(Long dealershipId, Long vehicleId) {
+		Vehicle vehicle = findVehicleById(dealershipId, vehicleId);
+		vehicleDao.delete(vehicle);
+	}
+
 }

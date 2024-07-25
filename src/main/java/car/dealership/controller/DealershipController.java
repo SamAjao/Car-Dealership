@@ -75,7 +75,7 @@ public class DealershipController {
 	
 	@DeleteMapping("/dealership/{dealershipId}")
 	public Map<String, String> deleteDealershipById(@PathVariable Long dealershipId){
-		log.info("Deleting dealership with ID=" + dealershipId);
+		log.info("Deleting dealership with ID={}", dealershipId);
 		
 		dealershipService.deleteDealershipById(dealershipId);
 		
@@ -126,6 +126,45 @@ public class DealershipController {
 		log.info("Creating vehicle {}", vehicleData);
 		
 		return dealershipService.saveVehicle(dealershipId, vehicleData);
+	}
+	
+	@PutMapping("/dealership/{dealershipId}/vehicle/{vehicleId}")
+	public VehicleData updateVehicle(@PathVariable Long dealershipId, @RequestBody VehicleData vehicleData,
+			@PathVariable Long vehicleId) {
+		
+		log.info("Updating vehicleID={} at dealershipID={}", vehicleId, dealershipId);
+		vehicleData.setVehicleId(vehicleId);
+		return dealershipService.saveVehicle(dealershipId, vehicleData);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/vehicle/{vehicleId}")
+	public VehicleData retrieveVehicleById(@PathVariable Long dealershipId, @PathVariable Long vehicleId) {
+		log.info("Retrieving vehicle with ID={} at dealership with ID={}", vehicleId, dealershipId);
+		
+		return dealershipService.retrieveVehicleById(dealershipId, vehicleId);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/vehicle")
+	public List<VehicleData> retrieveAllVehiclesByDealershipId(@PathVariable Long dealershipId){
+		log.info("Retrieving all vehicles at dealership with ID={}", dealershipId);
+		
+		return dealershipService.retrieveAllVehiclesByDealershipId(dealershipId);
+	}
+	
+	@DeleteMapping("/dealership/{dealershipId}/vehicle")
+	public void deleteAllVehicles(@PathVariable Long dealershipId) {
+		log.info("Attempting to delete all vehicles at dealershipID=", dealershipId);
+		throw new UnsupportedOperationException("Deleting all dealerships is not allowed!!!");
+	}
+	
+	@DeleteMapping("/dealership/{dealershipId}/vehicle/{vehicleId}")
+	public Map<String, String> deleteVehicleById(@PathVariable Long dealershipId, @PathVariable Long vehicleId){
+		log.info("Deleting vehicle with ID={}", dealershipId);
+		
+		dealershipService.deleteVehicleById(dealershipId, vehicleId);
+		
+		return Map.of("message", "Deletion of vehicle with ID=" + vehicleId + 
+				" at dealershipID=" + dealershipId + " was successful");
 	}
 		
 }
