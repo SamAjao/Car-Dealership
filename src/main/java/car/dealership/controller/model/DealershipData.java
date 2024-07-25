@@ -158,8 +158,8 @@ public class DealershipData {
 		private String city;
 		private String state;
 		private String zip;
-		private Set<VehicleData> vehicles = new HashSet<VehicleData>();
-		private Set<DealershipData> dealerships = new HashSet<DealershipData>();
+//		private Set<VehicleData> vehicles = new HashSet<VehicleData>();
+//		private Set<DealershipData> dealerships = new HashSet<DealershipData>();
 		
 		public CustomerData(Customer customer) {
 			this.customerId = customer.getCustomerId();
@@ -172,13 +172,13 @@ public class DealershipData {
 			this.state = customer.getState();
 			this.zip = customer.getZip();
 			
-			for(Dealership dealership : customer.getDealerships()) {
-				this.dealerships.add(new DealershipData(dealership));
-			}
-			
-			for(Vehicle vehicle : customer.getVehicles()) {
-				this.vehicles.add(new VehicleData(vehicle));
-			}
+//			for(Dealership dealership : customer.getDealerships()) {
+//				this.dealerships.add(new DealershipData(dealership));
+//			}
+//			
+//			for(Vehicle vehicle : customer.getVehicles()) {
+//				this.vehicles.add(new VehicleData(vehicle));
+//			}
 		}
 		
 		public Customer toCustomer() {
@@ -194,13 +194,13 @@ public class DealershipData {
 			customer.setState(state);
 			customer.setZip(zip);
 			
-			for(DealershipData dealershipData : dealerships) {
-				customer.getDealerships().add(dealershipData.toDealership());
-			}
-			
-			for(VehicleData vehicleData : vehicles) {
-				customer.getVehicles().add(vehicleData.toVehicle());
-			}
+//			for(DealershipData dealershipData : dealerships) {
+//				customer.getDealerships().add(dealershipData.toDealership());
+//			}
+//			
+//			for(VehicleData vehicleData : vehicles) {
+//				customer.getVehicles().add(vehicleData.toVehicle());
+//			}
 			
 			return customer;		
 		}

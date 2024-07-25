@@ -1,0 +1,10 @@
+{
+	"firstName": "Peter",
+	"lastName": "Parker",
+	"email": "Peter.Parker@marvel.mail",
+	"phone": "(208) 523-4219",
+	"address": "123 Friendly Street",
+	"city": "New York",
+	"state": "New York",
+	"zip": "12345"
+}

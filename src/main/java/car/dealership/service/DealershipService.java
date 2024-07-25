@@ -17,11 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import car.dealership.controller.model.DealershipData;
+import car.dealership.controller.model.DealershipData.CustomerData;
 import car.dealership.controller.model.DealershipData.EmployeeData;
 import car.dealership.controller.model.DealershipData.VehicleData;
+import car.dealership.dao.CustomerDao;
 import car.dealership.dao.DealershipDao;
 import car.dealership.dao.EmployeeDao;
 import car.dealership.dao.VehicleDao;
+import car.dealership.entity.Customer;
 import car.dealership.entity.Dealership;
 import car.dealership.entity.Employee;
 import car.dealership.entity.Vehicle;
@@ -37,6 +40,9 @@ public class DealershipService {
 	
 	@Autowired
 	private VehicleDao vehicleDao;
+	
+	@Autowired
+	private CustomerDao customerDao;
 
 	/*
 	 *  ::::::::::::::::::::::::::: DEALERSHIP TRANSACTIONS :::::::::::::::::::::::::::
@@ -264,6 +270,67 @@ public class DealershipService {
 	public void deleteVehicleById(Long dealershipId, Long vehicleId) {
 		Vehicle vehicle = findVehicleById(dealershipId, vehicleId);
 		vehicleDao.delete(vehicle);
+	}
+	
+	
+	/*
+	 *  ::::::::::::::::::::::::::: CUSTOMER TRANSACTIONS :::::::::::::::::::::::::::
+	 */
+	
+	@Transactional(readOnly = false)
+	public CustomerData saveCustomer(Long dealershipId, CustomerData customerData) {
+		Dealership dealership = findDealershipById(dealershipId);
+		Long customerId = customerData.getCustomerId();
+		Customer customer = findOrCreateCustomer(dealershipId, customerId);
+		
+		copyCustomerFields(customer, customerData);
+		
+		customer.getDealerships().add(dealership);
+		dealership.getCustomers().add(customer);
+		
+		Customer dbCustomer = customerDao.save(customer);
+		
+		return new CustomerData(dbCustomer);
+	}
+
+	private Customer findOrCreateCustomer(Long dealershipId, Long customerId) {
+		Customer customer;
+		
+		if(Objects.isNull(customerId)) {
+			customer = new Customer();
+		}
+		else {
+			customer = findCustomerById(dealershipId, customerId);
+		}
+		
+		return customer;
+	}
+
+	private Customer findCustomerById(Long dealershipId, Long customerId) {
+		Customer customer = customerDao.findById(customerId)
+				.orElseThrow(() -> new NoSuchElementException
+						("Customer with ID=" + customerId + " not found in this dealership"));
+		
+		for(Dealership dealership : customer.getDealerships()) {
+			if(dealership.getDealershipId() == dealershipId) {
+				return customer;
+			}
+		}
+		
+		//Only arrive here if customer is found and pet store is not.
+		throw new IllegalArgumentException("Dealership with ID=" + dealershipId + " not found.");
+	}
+	
+	private void copyCustomerFields(Customer customer, CustomerData customerData) {
+		customer.setCustomerId(customerData.getCustomerId());
+		customer.setFirstName(customerData.getFirstName());
+		customer.setLastName(customerData.getLastName());
+		customer.setEmail(customerData.getEmail());
+		customer.setPhone(customerData.getPhone());
+		customer.setAddress(customerData.getAddress());
+		customer.setCity(customerData.getCity());
+		customer.setState(customerData.getState());
+		customer.setZip(customerData.getZip());
 	}
 
 }

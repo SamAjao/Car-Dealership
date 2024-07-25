@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import car.dealership.controller.model.DealershipData;
+import car.dealership.controller.model.DealershipData.CustomerData;
 import car.dealership.controller.model.DealershipData.EmployeeData;
 import car.dealership.controller.model.DealershipData.VehicleData;
 import car.dealership.service.DealershipService;
@@ -154,7 +155,7 @@ public class DealershipController {
 	@DeleteMapping("/dealership/{dealershipId}/vehicle")
 	public void deleteAllVehicles(@PathVariable Long dealershipId) {
 		log.info("Attempting to delete all vehicles at dealershipID=", dealershipId);
-		throw new UnsupportedOperationException("Deleting all dealerships is not allowed!!!");
+		throw new UnsupportedOperationException("Deleting all vehicles from dealership is not allowed!!!");
 	}
 	
 	@DeleteMapping("/dealership/{dealershipId}/vehicle/{vehicleId}")
@@ -166,5 +167,17 @@ public class DealershipController {
 		return Map.of("message", "Deletion of vehicle with ID=" + vehicleId + 
 				" at dealershipID=" + dealershipId + " was successful");
 	}
+	
+	/*
+	 * CUSTOMER CRUD OPERATIONS
+	 */
+	
+	@PostMapping("/dealership/{dealershipId}/customer")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public CustomerData insertCustomer(@PathVariable Long dealershipId, @RequestBody CustomerData customerData) {
+		log.info("Creating customer in dealershipID={}", dealershipId);
 		
+		return dealershipService.saveCustomer(dealershipId, customerData);
+	}
+	
 }
