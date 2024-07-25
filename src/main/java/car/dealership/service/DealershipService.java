@@ -166,6 +166,7 @@ public class DealershipService {
 		employee.setJobTitle(employeeData.getJobTitle());
 	}
 
+	@Transactional(readOnly = true)
 	public EmployeeData retrieveEmployeeById(Long dealershipId, Long employeeId) {
 		findDealershipById(dealershipId); //throws exception if NOT found.
 		Employee employee = findEmployeeById(dealershipId, employeeId);
@@ -177,6 +178,7 @@ public class DealershipService {
 		return new EmployeeData(employee);
 	}
 
+	@Transactional(readOnly = true)
 	public List<EmployeeData> retrieveAllEmployeesByDealershipId(Long dealershipId) {
 		Dealership dealership = findDealershipById(dealershipId);
 		List <EmployeeData> response = new LinkedList<EmployeeData>();
@@ -231,7 +233,7 @@ public class DealershipService {
 			return vehicle;
 		}
 		else {
-			throw new IllegalArgumentException("Vehicle with vehicle_id=" + vehicleId + " was not found");
+			throw new IllegalArgumentException("Vehicle with vehicle_id=" + vehicleId + " was not found at this dealership.");
 		}
 	}
 	
@@ -245,6 +247,7 @@ public class DealershipService {
 		vehicle.setCustomer(vehicleData.getCustomer());
 	}
 
+	@Transactional(readOnly = true)
 	public VehicleData retrieveVehicleById(Long dealershipId, Long vehicleId) {
 		findDealershipById(dealershipId); //throws exception if NOT found.
 		Vehicle vehicle = findVehicleById(dealershipId, vehicleId);
@@ -256,6 +259,7 @@ public class DealershipService {
 		return new VehicleData(vehicle);
 	}
 
+	@Transactional(readOnly = true)
 	public List<VehicleData> retrieveAllVehiclesByDealershipId(Long dealershipId) {
 		Dealership dealership = findDealershipById(dealershipId);
 		List <VehicleData> response = new LinkedList<VehicleData>();
@@ -267,6 +271,7 @@ public class DealershipService {
 		return response;
 	}
 
+	@Transactional(readOnly = false)
 	public void deleteVehicleById(Long dealershipId, Long vehicleId) {
 		Vehicle vehicle = findVehicleById(dealershipId, vehicleId);
 		vehicleDao.delete(vehicle);
@@ -317,8 +322,8 @@ public class DealershipService {
 			}
 		}
 		
-		//Only arrive here if customer is found and pet store is not.
-		throw new IllegalArgumentException("Dealership with ID=" + dealershipId + " not found.");
+		//Only arrive here if customer is found and dealership is not.
+		throw new IllegalArgumentException("Customer with ID=" + customerId + " exists, but dealership does not.");
 	}
 	
 	private void copyCustomerFields(Customer customer, CustomerData customerData) {
@@ -331,6 +336,30 @@ public class DealershipService {
 		customer.setCity(customerData.getCity());
 		customer.setState(customerData.getState());
 		customer.setZip(customerData.getZip());
+	}
+
+	@Transactional(readOnly = true)
+	public CustomerData retrieveCustomerById(Long dealershipId, Long customerId) {
+		Dealership dealership = findDealershipById(dealershipId); //throws exception if NOT found.
+		Customer customer = findCustomerById(dealershipId, customerId);
+		
+		if(!customer.getDealerships().contains(dealership) ) {
+			throw new IllegalStateException("Customer with ID=" + customerId + " was not found at dealership with ID=" + dealershipId);
+		}
+		
+		return new CustomerData(customer);
+	}
+
+	@Transactional(readOnly = true)
+	public List<CustomerData> retrieveAllCustomersByDealershipId(Long dealershipId) {
+		Dealership dealership = findDealershipById(dealershipId);
+		List <CustomerData> response = new LinkedList<CustomerData>();
+		
+		for(Customer customer : dealership.getCustomers()) {
+			response.add(new CustomerData(customer));
+		}
+		
+		return response;
 	}
 
 }

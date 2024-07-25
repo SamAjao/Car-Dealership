@@ -180,4 +180,26 @@ public class DealershipController {
 		return dealershipService.saveCustomer(dealershipId, customerData);
 	}
 	
+	@PutMapping("/dealership/{dealershipId}/customer/{customerId}")
+	public CustomerData updateCustomer(@PathVariable Long dealershipId, @RequestBody CustomerData customerData,
+			@PathVariable Long customerId) {
+		
+		log.info("Updating customer with ID={} at dealershipID={}", customerId, dealershipId);
+		customerData.setCustomerId(customerId);
+		return dealershipService.saveCustomer(dealershipId, customerData);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/customer/{customerId}")
+	public CustomerData retrieveCustomerById(@PathVariable Long dealershipId, @PathVariable Long customerId) {
+		log.info("Retrieving customer with ID={} at dealership with ID={}", customerId, dealershipId);
+		
+		return dealershipService.retrieveCustomerById(dealershipId, customerId);
+	}
+	
+	@GetMapping("/dealership/{dealershipId}/customer")
+	public List<CustomerData> retrieveAllCustomersByDealershipId(@PathVariable Long dealershipId){
+		log.info("Retrieving all customers at dealership with ID={}", dealershipId);
+		
+		return dealershipService.retrieveAllCustomersByDealershipId(dealershipId);
+	}
 }
