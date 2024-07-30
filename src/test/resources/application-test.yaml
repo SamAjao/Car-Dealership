@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    username:  car_dealership
+    password:  car_dealership
+    url:  jdbc:h2:mem:car_dealership;MODE=MYSQL

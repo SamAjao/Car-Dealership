@@ -53,6 +53,16 @@ public class DealershipData {
 		}
 	}
 	
+	public DealershipData(Long dealershipId, String name, String address, String city, String state, String zip, String phone) {
+		this.dealershipId = dealershipId;
+		this.name = name;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.phone = phone;
+	}
+	
 	public Dealership toDealership() {
 		Dealership dealership = new Dealership();
 		
@@ -100,6 +110,25 @@ public class DealershipData {
 			this.customer = vehicle.getCustomer();
 		}
 		
+		public VehicleData(Long vehicleId, int year, String make, String model, String color, String trim) {
+			this.vehicleId = vehicleId;
+			this.year = year;
+			this.make = make;
+			this.model = model;
+			this.color = color;
+			this.trim = trim;
+		}
+		
+		public VehicleData(Long vehicleId, int year, String make, String model, String color, String trim, Customer customer) {
+			this.vehicleId = vehicleId;
+			this.year = year;
+			this.make = make;
+			this.model = model;
+			this.color = color;
+			this.trim = trim;
+			this.customer  = customer;
+		}
+		
 		public Vehicle toVehicle() {
 			Vehicle vehicle = new Vehicle();
 			
@@ -131,6 +160,14 @@ public class DealershipData {
 			this.lastName = employee.getLastName();
 			this.phone = employee.getPhone();
 			this.jobTitle = employee.getJobTitle();
+		}
+		
+		public EmployeeData(Long employeeId, String firstName, String lastName, String phone, String jobTitle) {
+			this.employeeId = employeeId;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.phone = phone;
+			this.jobTitle = jobTitle;
 		}
 		
 		public Employee toEmployee() {
@@ -171,6 +208,18 @@ public class DealershipData {
 			this.state = customer.getState();
 			this.zip = customer.getZip();
 			
+		}
+		
+		public CustomerData(Long customerId, String firstName, String lastName, String email, String phone, String address, String city, String state, String zip) {
+			this.customerId = customerId;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.email = email;
+			this.phone = phone;
+			this.address = address;
+			this.city = city;
+			this.state = state;
+			this.zip = zip;
 		}
 		
 		public Customer toCustomer() {
