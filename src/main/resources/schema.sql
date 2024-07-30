@@ -43,11 +43,11 @@ CREATE TABLE vehicle (
 	vehicle_id INT NOT NULL AUTO_INCREMENT,
 	dealership_id INT NOT NULL,
 	customer_id INT,
-	year INT NOT NULL,
+	"year" INT NOT NULL,
 	make VARCHAR (128) NOT NULL,
 	model VARCHAR (128) NOT NULL,
 	color VARCHAR (128) NOT NULL,
-	trim VARCHAR (128),
+	vehicle_trim VARCHAR (128),
 	PRIMARY KEY (vehicle_id),
 	FOREIGN KEY (dealership_id) REFERENCES dealership (dealership_id) ON DELETE CASCADE,
     FOREIGN KEY (customer_id) REFERENCES customer (customer_id) ON DELETE CASCADE

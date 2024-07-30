@@ -243,7 +243,7 @@ public class DealershipService {
 		vehicle.setMake(vehicleData.getMake());
 		vehicle.setModel(vehicleData.getModel());
 		vehicle.setColor(vehicleData.getColor());
-		vehicle.setTrim(vehicleData.getTrim());
+		vehicle.setVehicleTrim(vehicleData.getTrim());
 		vehicle.setCustomer(vehicleData.getCustomer());
 	}
 

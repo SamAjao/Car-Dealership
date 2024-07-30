@@ -106,7 +106,7 @@ public class DealershipData {
 			this.make = vehicle.getMake();
 			this.model = vehicle.getModel();
 			this.color = vehicle.getColor();
-			this.trim = vehicle.getTrim();
+			this.trim = vehicle.getVehicleTrim();
 			this.customer = vehicle.getCustomer();
 		}
 		
@@ -137,7 +137,7 @@ public class DealershipData {
 			vehicle.setMake(make);
 			vehicle.setModel(model);
 			vehicle.setColor(color);
-			vehicle.setTrim(trim);
+			vehicle.setVehicleTrim(trim);
 			vehicle.setCustomer(customer);
 			
 			return vehicle;

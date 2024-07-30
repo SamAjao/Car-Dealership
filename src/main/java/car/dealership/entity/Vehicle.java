@@ -28,7 +28,7 @@ public class Vehicle {
 	private String make;
 	private String model;
 	private String color;
-	private String trim;
+	private String vehicleTrim;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude

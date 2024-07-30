@@ -22,7 +22,7 @@ import car.dealership.controller.model.DealershipData;
 @SpringBootTest(webEnvironment = WebEnvironment.NONE,
 		classes = CarDealershipApplication.class)
 @ActiveProfiles("test")
-@Sql(scripts = {"classpath:schema.sql", "data.sql"})
+@Sql(scripts = {"classpath:schema.sql"})
 @SqlConfig(encoding = "utf-8")
 class DealershipControllerTest extends DealershipServiceTestSupport{
 
