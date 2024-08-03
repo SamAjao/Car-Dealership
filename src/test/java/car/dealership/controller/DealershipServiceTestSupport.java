@@ -54,13 +54,17 @@ public class DealershipServiceTestSupport {
 		return JdbcTestUtils.countRowsInTable(jdbcTemplate, DEALERSHIP_TABLE);
 	}
 
-	protected DealershipData insertLocation(DealershipData dealershipData) {
+	protected DealershipData insertDealership(DealershipData dealershipData) {
 		Dealership dealership = dealershipData.toDealership();
 		DealershipData clone = new DealershipData(dealership);
 		
 		clone.setDealershipId(null);
 		
 		return dealershipController.createDealership(clone);
+	}
+	
+	protected DealershipData retrieveDealership(Long dealershipId) {
+		return dealershipController.retrieveDealership(dealershipId);
 	}
 
 }// END DealershipServiceTestSupport{} Class

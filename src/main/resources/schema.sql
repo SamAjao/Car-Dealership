@@ -43,7 +43,7 @@ CREATE TABLE vehicle (
 	vehicle_id INT NOT NULL AUTO_INCREMENT,
 	dealership_id INT NOT NULL,
 	customer_id INT,
-	"year" INT NOT NULL,
+	vehicle_year INT NOT NULL,
 	make VARCHAR (128) NOT NULL,
 	model VARCHAR (128) NOT NULL,
 	color VARCHAR (128) NOT NULL,

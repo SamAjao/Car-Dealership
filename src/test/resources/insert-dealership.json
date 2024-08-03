@@ -6,3 +6,21 @@
 	"zip": "83402",
 	"phone": "(208) 523-4219"
 }
+
+{
+	"name": "Bob's Buggies",
+	"address": "4900 Lindsay Blvd",
+	"city": "Idaho Falls",
+	"state": "Idaho",
+	"zip": "83402",
+	"phone": "(208) 556-5219"
+}
+
+{
+	"name": "Jane's Jallopies",
+	"address": "5900 Lindsay Blvd",
+	"city": "Idaho Plains",
+	"state": "Idaho",
+	"zip": "83402",
+	"phone": "(208) 557-5219"
+}

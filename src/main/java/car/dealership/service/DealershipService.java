@@ -239,7 +239,7 @@ public class DealershipService {
 	
 	private void copyVehicleFields(Vehicle vehicle, VehicleData vehicleData) {
 		vehicle.setVehicleId(vehicleData.getVehicleId());
-		vehicle.setYear(vehicleData.getYear());
+		vehicle.setVehicleYear(vehicleData.getYear());
 		vehicle.setMake(vehicleData.getMake());
 		vehicle.setModel(vehicleData.getModel());
 		vehicle.setColor(vehicleData.getColor());

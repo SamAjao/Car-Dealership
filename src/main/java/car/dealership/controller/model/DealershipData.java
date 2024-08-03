@@ -102,7 +102,7 @@ public class DealershipData {
 		
 		public VehicleData(Vehicle vehicle) {
 			this.vehicleId = vehicle.getVehicleId();
-			this.year = vehicle.getYear();
+			this.year = vehicle.getVehicleYear();
 			this.make = vehicle.getMake();
 			this.model = vehicle.getModel();
 			this.color = vehicle.getColor();
@@ -133,7 +133,7 @@ public class DealershipData {
 			Vehicle vehicle = new Vehicle();
 			
 			vehicle.setVehicleId(vehicleId);
-			vehicle.setYear(year);
+			vehicle.setVehicleYear(year);
 			vehicle.setMake(make);
 			vehicle.setModel(model);
 			vehicle.setColor(color);

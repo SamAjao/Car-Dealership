@@ -33,7 +33,7 @@ class DealershipControllerTest extends DealershipServiceTestSupport{
 		DealershipData expected = buildInsertDealership(1);
 		
 		//When : the dealership is added to the dealership_table
-		DealershipData actual = insertLocation(request);
+		DealershipData actual = insertDealership(request);
 		
 		//Then : the dealership returned is what is expected
 		assertThat(actual).isEqualTo(expected);
@@ -41,7 +41,19 @@ class DealershipControllerTest extends DealershipServiceTestSupport{
 		//And : there is one row in the dealership table.
 		assertThat(rowsInDealershipTable()).isOne();
 	}
-
+	
+	@Test
+	void testRetrieveDealership() {
+		//Give : Given a dealership
+		DealershipData dealership = insertDealership(buildInsertDealership(1));
+		DealershipData expected = buildInsertDealership(1);
+				
+		//When : the dealership is retrieved by dealership ID
+		DealershipData actual = retrieveDealership(dealership.getDealershipId());
+		
+		//Then : the actual dealership is equal to the expected dealership
+		assertThat(actual).isEqualTo(expected);
+	}
 
 
 }
