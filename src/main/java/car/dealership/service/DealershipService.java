@@ -101,6 +101,7 @@ public class DealershipService {
 		// @formatter:off
 		return dealershipDao.findAll()
 				.stream()
+				.sorted((dealership1, dealership2) -> dealership1.getName().compareTo(dealership2.getName()))
 				.map(dealer -> new DealershipData(dealer))
 				.toList();
 		// @formatter:on
